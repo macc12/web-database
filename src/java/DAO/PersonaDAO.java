@@ -61,7 +61,7 @@ public class PersonaDAO implements IBaseDatos<Persona> {
 
     @Override
     public boolean insert(Persona t) throws SQLException {
-        boolean result = false;
+        int result = 0;
         Connection connection = Conexion.getConnection();
         String query = " insert into Persona" + " values (?,?,?)";
         PreparedStatement preparedStmt = null;
@@ -71,11 +71,15 @@ public class PersonaDAO implements IBaseDatos<Persona> {
             preparedStmt.setString(2, t.getNombre());
             preparedStmt.setString(3, t.getApellido());
 
-            result = preparedStmt.execute();
+            result = preparedStmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-        }
-        return result;
+        }        
+        if(result==0){
+            return false;
+        }else{
+            return true;
+        }        
     }
 
     @Override
